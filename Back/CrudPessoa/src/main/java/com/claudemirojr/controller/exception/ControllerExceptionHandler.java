@@ -20,6 +20,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.claudemirojr.exception.FileNotFoundException;
+import com.claudemirojr.exception.FileStorageException;
 import com.claudemirojr.exception.NotFoundException;
 
 @ControllerAdvice
@@ -34,6 +36,22 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		ApiError error = new ApiError(HttpStatus.NOT_FOUND.value(), ex.getMessage(), OffsetDateTime.now());
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+
+	// Arquivo não existe
+	@ExceptionHandler(FileNotFoundException.class)
+	public ResponseEntity<ApiError> handleNotFoundException(FileNotFoundException ex) {
+		ApiError error = new ApiError(HttpStatus.NOT_FOUND.value(), ex.getMessage(), OffsetDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+
+	// Erro interno na hora de armazenar o arquivo
+	@ExceptionHandler(FileStorageException.class)
+	public ResponseEntity<ApiError> handleNotFoundException(FileStorageException ex) {
+		ApiError error = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), OffsetDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
 
 	// Campos não passaram nas validações
@@ -110,13 +128,14 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	/*
-	@ExceptionHandler(BadCredentialsException.class)
-	public ResponseEntity<ApiError> handleBadCredentialsException(BadCredentialsException ex) {
-		ApiError error = new ApiError(HttpStatus.UNAUTHORIZED.value(), ex.getMessage(), OffsetDateTime.now());
-
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-	}
-	*/
+	 * @ExceptionHandler(BadCredentialsException.class) public
+	 * ResponseEntity<ApiError>
+	 * handleBadCredentialsException(BadCredentialsException ex) { ApiError error =
+	 * new ApiError(HttpStatus.UNAUTHORIZED.value(), ex.getMessage(),
+	 * OffsetDateTime.now());
+	 * 
+	 * return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error); }
+	 */
 
 	@ExceptionHandler(AccessDeniedException.class)
 	public ResponseEntity<ApiError> handleAccessDeniedException(AccessDeniedException ex) {
