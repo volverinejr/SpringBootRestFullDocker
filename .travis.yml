@@ -1,0 +1,18 @@
+language: bash
+services: docker
+before_install:
+  - cd Back
+  - echo "Estou na pasta do projeto"
+script:
+  - docker-compose build
+before_deploy:
+  - echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+deploy:
+  provider: script
+  script:
+    docker push volverinejr/mysql-app-spring-restfull;
+    docker push volverinejr/app-spring-restfull;
+  on:
+    branch: master
+notifications:
+  email: false
