@@ -9,9 +9,9 @@ services:
       dockerfile: Dockerfile
     environment:
       TZ: America/Bahia
-      MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: miro123456
+      MYSQL_USER: miroroot
+      MYSQL_PASSWORD: miro123456
       MYSQL_DATABASE: db_spring_docker
     ports:
       - "3308:3306"
