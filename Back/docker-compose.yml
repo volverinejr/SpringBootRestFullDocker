@@ -25,6 +25,7 @@ services:
     environment:
       TZ: America/Bahia
       SPRING_BOOT_ENVIRONMENT: Production
+      SPRING_PROFILES_ACTIVE: prod
     volumes:
       - ./CrudPessoa:/CrudPessoa
       - ~/.m2:/root/.m2
