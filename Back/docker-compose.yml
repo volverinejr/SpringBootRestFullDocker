@@ -1,12 +1,9 @@
 version: '3.4'
 services:
   db:
-    image: volverinejr/mysql-app-spring-restfull
+    image: mysql:8.0.21
     command: mysqld --default-authentication-plugin=mysql_native_password
     restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile
     environment:
       TZ: America/Bahia
       MYSQL_ROOT_PASSWORD: miro123456
@@ -26,12 +23,9 @@ services:
       TZ: America/Bahia
       SPRING_BOOT_ENVIRONMENT: Production
       SPRING_PROFILES_ACTIVE: prod
-    volumes:
-      - ./CrudPessoa:/CrudPessoa
-      - ~/.m2:/root/.m2
     ports:
       - "8080:8080"
-    command: mvn clean spring-boot:run
+    command: mvn spring-boot:run
     links:
       - db
     depends_on:
