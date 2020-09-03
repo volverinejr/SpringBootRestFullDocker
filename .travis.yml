@@ -10,7 +10,6 @@ before_deploy:
 deploy:
   provider: script
   script:
-    docker push volverinejr/mysql-app-spring-restfull;
     docker push volverinejr/app-spring-restfull;
   on:
     branch: master
