@@ -1,5 +1,4 @@
 FROM openjdk:11-jdk-slim
-RUN mvn clean install
 VOLUME /tmp
 ADD target/CrudPessoa-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
