@@ -1,5 +1,5 @@
 FROM openjdk:11-jdk-slim
-VOLUME /tpm
+VOLUME /tmp
 ADD target/CrudPessoa-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
 RUN bash -c 'touch /app.jar'
