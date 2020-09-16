@@ -1,6 +1,5 @@
 package com.claudemirojr.controller.exception;
 
-import java.nio.file.AccessDeniedException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
@@ -12,6 +11,8 @@ import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -128,20 +129,30 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	/*
-	 * @ExceptionHandler(BadCredentialsException.class) public
+	 * @ExceptionHandler(InvalidJwtAuthenticationException.class) public
 	 * ResponseEntity<ApiError>
-	 * handleBadCredentialsException(BadCredentialsException ex) { ApiError error =
-	 * new ApiError(HttpStatus.UNAUTHORIZED.value(), ex.getMessage(),
+	 * handleInvalidJwtAuthenticationException(MaxUploadSizeExceededException ex) {
+	 * String[] parts = ex.getMessage().split(":"); String msg = parts[parts.length
+	 * - 1].trim().toUpperCase();
+	 * 
+	 * ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), msg,
 	 * OffsetDateTime.now());
 	 * 
-	 * return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error); }
+	 * return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error); }
 	 */
 
-	@ExceptionHandler(AccessDeniedException.class)
-	public ResponseEntity<ApiError> handleAccessDeniedException(AccessDeniedException ex) {
-		ApiError error = new ApiError(HttpStatus.FORBIDDEN.value(), ex.getMessage(), OffsetDateTime.now());
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<ApiError> handleBadCredentialsException(BadCredentialsException ex) {
+		ApiError error = new ApiError(HttpStatus.UNAUTHORIZED.value(), ex.getMessage(), OffsetDateTime.now());
 
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+	}
+
+	@ExceptionHandler(AuthenticationException.class)
+	public ResponseEntity<ApiError> handleAuthenticationException(AuthenticationException ex) {
+		ApiError error = new ApiError(HttpStatus.UNAUTHORIZED.value(), ex.getMessage(), OffsetDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
 	}
 
 }

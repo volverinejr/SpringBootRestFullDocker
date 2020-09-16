@@ -42,10 +42,9 @@ public class PessoaController {
 
 	@Autowired
 	private IPessoaService _service;
-	
+
 	@Autowired
 	private PagedResourcesAssembler<PessoaDto> assembler;
-	
 
 	@ApiOperation(value = "Listar todas as pessoas")
 	@GetMapping()
@@ -53,49 +52,37 @@ public class PessoaController {
 		ParamsRequestModel prm = new ParamsRequestModel(params);
 
 		Page<Pessoa> pessoasPage = _service.findAll(prm);
-		
+
 		Page<PessoaDto> pessoasDto = pessoasPage.map(this::conerterToPessoaDto);
 
-		pessoasDto
-			.stream()
-			.forEach(p -> p.add(linkTo(methodOn(PessoaController.class).FindById(p.getKey())).withSelfRel()));
-		
+		pessoasDto.stream()
+				.forEach(p -> p.add(linkTo(methodOn(PessoaController.class).FindById(p.getKey())).withSelfRel()));
 
 		PagedModel<?> resources = assembler.toModel(pessoasDto);
-		
+
 		return new ResponseEntity<>(resources, HttpStatus.OK);
 	}
-	
-	
-	
+
 	@ApiOperation(value = "buscar pessoas pelo nome")
 	@GetMapping("/findByNome/{nome}")
-	public ResponseEntity<?> findByNomeContaining(
-			@PathVariable String nome,
-			@RequestParam Map<String, String> params) {
+	public ResponseEntity<?> findByNomeContaining(@PathVariable String nome, @RequestParam Map<String, String> params) {
 		ParamsRequestModel prm = new ParamsRequestModel(params);
 
 		Page<Pessoa> pessoasPage = _service.findByNomeContaining(nome, prm);
-		
+
 		Page<PessoaDto> pessoasDto = pessoasPage.map(this::conerterToPessoaDto);
 
-		pessoasDto
-			.stream()
-			.forEach(p -> p.add(linkTo(methodOn(PessoaController.class).FindById(p.getKey())).withSelfRel()));
-		
+		pessoasDto.stream()
+				.forEach(p -> p.add(linkTo(methodOn(PessoaController.class).FindById(p.getKey())).withSelfRel()));
 
 		PagedModel<?> resources = assembler.toModel(pessoasDto);
-		
+
 		return new ResponseEntity<>(resources, HttpStatus.OK);
 	}
 
-	
-	
 	private PessoaDto conerterToPessoaDto(Pessoa pessoa) {
 		return DozerConverter.parseObject(pessoa, PessoaDto.class);
 	}
-	
-	
 
 	@ApiOperation(value = "Localizar uma pessoa específica")
 	@GetMapping("/{id}")

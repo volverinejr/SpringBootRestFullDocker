@@ -1,19 +1,5 @@
 version: '3.4'
 services:
-  db:
-    image: mysql:8.0.21
-    command: mysqld --default-authentication-plugin=mysql_native_password
-    restart: always
-    environment:
-      TZ: America/Bahia
-      MYSQL_ROOT_PASSWORD: miro123456
-      MYSQL_USER: miroroot
-      MYSQL_PASSWORD: miro123456
-      MYSQL_DATABASE: db_spring_docker
-    ports:
-      - "3306:3306"
-    networks:
-      - miro-network
   app-spring-restfull:
     image: volverinejr/app-spring-restfull
     restart: always
@@ -26,10 +12,6 @@ services:
     ports:
       - "8080:8080"
     command: mvn spring-boot:run
-    links:
-      - db
-    depends_on:
-      - db
     networks:
       - miro-network
 networks:
